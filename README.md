@@ -202,50 +202,134 @@ Setelah dilakukan sorting dan menginput sampai enter, Kita membuat perulangan un
 
 Terakhir kami tak lupa membuat fungsi faktorial untuk menampilkan bilangan faktorial tiap inputan yang suda dibuat threadnya. Lalu didalam fungsi faktorial juga, kita mengeprint hasilnya dengan sintaks 'printf' .
 
-4. Code:
-```c
+3. Code :
+
+```
 #include<stdio.h>
 #include<string.h>
 #include<pthread.h>
 #include<stdlib.h>
 #include<unistd.h>
-#include<sys/types.h>
-#include<sys/wait.h>
 
-pthread_t tid[2];
+void status_skrg();
+void *agmal_bangun();
+void *iraj_bobo();
 
-void* solve(void *arg)
+int Spirit_Status=100;
+int WakeUp_Status=0;
+
+int sistem_jln=0; //cek sistem jalan ato tidak ,, 2 untuk iraj_bobo ; 1 untuk agmal_bangun
+
+int i_ayo_bangun=0;
+int i_ayo_tidur=0;
+
+void status_skrg()
 {
-	pthread_t id = pthread_self();
-	if (pthread_equal(id, tid[0])) {
-		system("mkdir /home/faqih/Documents/FolderProses1");
-		system("ps -aux | head -10 > /home/faqih/Documents/FolderProses1/SimpanProses1.txt");
-		system("zip -j /home/faqih/Documents/FolderProses1/KompresProses1.zip /home/faqih/Documents/FolderProses1/SimpanProses1.txt");
-		system("rm /home/faqih/Documents/FolderProses1/SimpanProses1.txt");
-		sleep(15);
-		system("unzip -o /home/faqih/Documents/FolderProses1/KompresProses1.zip -d /home/faqih/Documents/FolderProses1/");
-	} else  {
-		system("mkdir /home/faqih/Documents/FolderProses2");
-		system("ps -aux | head -10 > /home/faqih/Documents/FolderProses2/SimpanProses2.txt");
-		system("zip -j /home/faqih/Documents/FolderProses2/KompresProses2.zip /home/faqih/Documents/FolderProses2/SimpanProses2.txt");
-		system("rm /home/faqih/Documents/FolderProses2/SimpanProses2.txt");
-		sleep(15);
-		system("unzip -o /home/faqih/Documents/FolderProses2/KompresProses2.zip -d /home/faqih/Documents/FolderProses2/");
-	}
-	return NULL;
+        printf("Agmal WakeUp_Status = %d \n", WakeUp_Status);
+        printf("Iraj Spirit_Status = %d \n", Spirit_Status);
 }
 
-int main(void)
+void *agmal_bangun()
 {
-	pthread_create(&tid[0], NULL, &solve, NULL);
-	pthread_create(&tid[1], NULL, &solve, NULL);
-	pthread_join(tid[0], NULL);
-	pthread_join(tid[1], NULL);
-	return 0;
+        while(1)
+        {
+                while(sistem_jln!=1) {};
+                if(i_ayo_bangun!=3) //gajalan lebih dr 3x
+                {
+                        i_ayo_bangun++;
+                        WakeUp_Status+=15;
+
+                }
+                else
+                {
+                        printf("Fitur Iraj Ayo Tidur disabled 10 s\n");
+                        sleep(10);
+                        i_ayo_bangun=0;
+                }
+                sistem_jln=0;
+        }
+}
+
+void *iraj_bobo()
+{
+        while(1)
+        {
+                while(sistem_jln!=2) {};
+                if(i_ayo_tidur!=3) //gajalan lebih dr 3x
+                {
+                        i_ayo_tidur++;
+                        Spirit_Status-=20;
+                }
+                else
+                {
+                        printf("Agmal Ayo Bangun disabled 10 s\n");
+                        sleep(10);
+                        i_ayo_bangun=0;
+                }
+                sistem_jln=0;
+        }
+}
+
+
+int main()
+{
+    pthread_t thread2, thread3;//inisialisasi awal
+    int  iret2, iret3;
+    int choose;
+    sistem_jln=0;
+
+    iret2 = pthread_create( &thread2, NULL, agmal_bangun, NULL); //membuat thread pertama
+    if(iret2) //jika eror
+    {
+        fprintf(stderr,"Error - pthread_create() return code: %d\n",iret2);
+        exit(EXIT_FAILURE);
+    }
+
+    iret3 = pthread_create( &thread3, NULL, iraj_bobo, NULL);//membuat thread kedua
+    if(iret3)//jika gagal
+    {
+        fprintf(stderr,"Error - pthread_create() return code: %d\n",iret3);
+        exit(EXIT_FAILURE);
+    }
+
+    while(1)
+   {
+        printf("1. All Status \n");
+        printf("2. Agmal ayo bangun\n");
+        printf("3. Iraj ayo tidur\n");
+
+    printf("Masukkan nomor yang tersedia = ");
+    scanf("%d", &choose);
+    if(choose==1) status_skrg();
+    else if(choose==2) sistem_jln=1;
+    else if(choose==3) sistem_jln=2;
+    else printf("Pilihan tidak tersedia\n");
+
+        if(WakeUp_Status >=100)
+        {
+                printf("Agmal Terbangun,mereka bangun pagi dan berolahraga\n");
+                exit(EXIT_SUCCESS);
+        }
+        else if(Spirit_Status <=0)
+        {
+                printf("Iraj ikut tidur, dan bangun kesiangan bersama Agmal \n");
+                exit(EXIT_SUCCESS);
+        }
+   }
+   return 0;
 }
 ```
-    
-  Penjelasan = 
-    Membuat program C untuk menyimpan 10 list proses yang sedang berjalan (ps-aux),Dimana awalnya list proses disimpan dalam di 2 file ekstensi .txt yaitu  SimpanProses1.txt di direktori /home/Document/FolderProses1 dan SimpanProses2.txt di direktori /home/Document/FolderProses2setelah itu masing2 file di  kompres zip dengan format nama file KompresProses1.zip dan KompresProses2.zip dan file SimpanProses1.txt dan SimpanProses2.txt akan otomatis terhapus, setelah itu program akan menunggu selama 15 detik lalu program akan mengekstrak kembali file KompresProses1.zip dan KompresProses2.zip.
-       Pertama, kita membuat fungsi untuk membuat file "FolderProses1", kemudian membuat fungsi untuk mengambil dan me-list 10  proses yang ada pada ps-aux, selanjutnya membuat fungsi untuk zip untuk me-zip file .txt menjadi .zip , kemudian membuat fungsi untuk menghapus file berkesktensi .txt, lalu kita buat program menunggu selama 15 deitk lalu yang terakhir membuat fungsi untuk unzip file. Lakukan proses diatas untuk proses1 dan proses2.
-    
+
+Penjelasan =
+
+Pertama, deklarasikan semua variabel yang dibutuhkan. Lalu membuat 3 fungsi yang dibutuhkan.
+
+Fungsi pertama adalah untuk status sekarang yaitu untuk mengecek wake up status dan spirit status setiap dilakukan pemanggilan.
+
+Fungsi kedua adalah fungsi agmal_bangun(), yaitu fungsi untuk menambah wake up status sebanyak 15 setiap dilakukan pemanggilan, kecuali jika pemanggilan dilakukan sudah 3 kali, maka akan ter print 'fitur iraj ayo tidur disables 10s'. Saat fungsi berjalan pun, sistem_jln untuk fungsi agmal_bangun adalah 1(terletak di main function saat memilih fitur yang memanggil fungsi agmal_bangun). Dan setelah selesai berjalan, sistem_jln di set 0 kembali.
+
+Fungsi ketiga adalah fungsi iraj_bobo(), yaitu fungsi untuk mengurangi spirit status sebanyak 20 setiap dilakukan pemanggilan, kecuali jika pemanggilan dilakukan sudah 3 kali, maka akan ter print 'agmal ayo bangun disables 10s'. Saat fungsi berjalan pun, sistem_jln untuk fungsi iraj_bobo adalah 2(terletak di main function saat memilih fitur yang memanggil fungsi iraj_bobo). Dan setelah selesai berjalan, sistem_jln di set 0 kembali.
+
+Pada main function, dibuat 2 thread dimana thread satu menjalankan fungsi agmal_bangun dan thread satunya lagi menjalankan fungsi iraj_bobo.
+
+Keadaan lain lagi yang terdapat pada main function adalah jika WakeUp_status sudah lebih dari sama dengan 100,  maka akan terprint "Agmal Terbangun,mereka bangun pagi dan berolahraga", dan jika Spirit_Status kurang dari sama dengan nol, maka akan terprint "Iraj ikut tidur, dan bangun kesiangan bersama Agmal".
