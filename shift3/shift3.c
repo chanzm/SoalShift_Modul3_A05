@@ -1,5 +1,4 @@
-  GNU nano 2.5.3                                                                                                                                   File: shift3.c                                                                                                                                                                                                                                                                            
-
+                                                                                                                                 File: shift3.c                                                                                                                                                                                                                                                                            
 #include<stdio.h>
 #include<string.h>
 #include<pthread.h>
