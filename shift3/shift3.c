@@ -1,4 +1,3 @@
-  GNU nano 2.5.3                                                                                                                                   File: shift3.c                                                                                                                                                                                                                                                                            
 
 #include<stdio.h>
 #include<string.h>
@@ -29,7 +28,7 @@ void *agmal_bangun()
         while(1)
         {
                 while(sistem_jln!=1) {};
-                if(i_ayo_bangun%3!=0) //gajalan lebih dr 3x
+                if(i_ayo_bangun!=3) //gajalan lebih dr 3x
                 {
                         i_ayo_bangun++;
                         WakeUp_Status+=15;
@@ -50,7 +49,7 @@ void *iraj_bobo()
         while(1)
         {
                 while(sistem_jln!=2) {};
-                if(i_ayo_tidur%3!=0) //gajalan lebih dr 3x
+                if(i_ayo_tidur!=3) //gajalan lebih dr 3x
                 {
                         i_ayo_tidur++;
                         Spirit_Status-=20;
@@ -86,9 +85,9 @@ int main()
         fprintf(stderr,"Error - pthread_create() return code: %d\n",iret3);
         exit(EXIT_FAILURE);
     }
-//    pthread_join(thread2,NULL);
-//    pthread_join(thread3,NULL);
 
+    while(1)
+   {
         printf("1. All Status \n");
         printf("2. Agmal ayo bangun\n");
         printf("3. Iraj ayo tidur\n");
@@ -100,8 +99,6 @@ int main()
     else if(choose==3) sistem_jln=2;
     else printf("Pilihan tidak tersedia\n");
 
-    while(1)
-   {
         if(WakeUp_Status >=100)
         {
                 printf("Agmal Terbangun,mereka bangun pagi dan berolahraga\n");
@@ -112,7 +109,6 @@ int main()
                 printf("Iraj ikut tidur, dan bangun kesiangan bersama Agmal \n");
                 exit(EXIT_SUCCESS);
         }
-       break;
    }
    return 0;
 }
