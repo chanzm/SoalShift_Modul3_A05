@@ -333,3 +333,11 @@ Fungsi ketiga adalah fungsi iraj_bobo(), yaitu fungsi untuk mengurangi spirit st
 Pada main function, dibuat 2 thread dimana thread satu menjalankan fungsi agmal_bangun dan thread satunya lagi menjalankan fungsi iraj_bobo.
 
 Keadaan lain lagi yang terdapat pada main function adalah jika WakeUp_status sudah lebih dari sama dengan 100,  maka akan terprint "Agmal Terbangun,mereka bangun pagi dan berolahraga", dan jika Spirit_Status kurang dari sama dengan nol, maka akan terprint "Iraj ikut tidur, dan bangun kesiangan bersama Agmal".
+
+4. Code :
+
+```
+
+```
+
+Penjelasan :
