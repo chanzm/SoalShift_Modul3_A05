@@ -201,3 +201,51 @@ pertama, deklarasikan semua variabel yang dibutuhkan. Lalu kita menginput angka 
 Setelah dilakukan sorting dan menginput sampai enter, Kita membuat perulangan untuk membuat thread sebanyak inputan, jadi, setiap inputan akan dibuat thread sendiri, dan tak lupa menambahkan join thread agar program bisa selesai bersamaan. Didalam membuat thread sendiri(pthread_create), tak lupa memanggil fungsi faktorial yang telah dibuat.
 
 Terakhir kami tak lupa membuat fungsi faktorial untuk menampilkan bilangan faktorial tiap inputan yang suda dibuat threadnya. Lalu didalam fungsi faktorial juga, kita mengeprint hasilnya dengan sintaks 'printf' .
+
+4. Code:
+```c
+#include<stdio.h>
+#include<string.h>
+#include<pthread.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<sys/types.h>
+#include<sys/wait.h>
+
+pthread_t tid[2];
+
+void* solve(void *arg)
+{
+	pthread_t id = pthread_self();
+	if (pthread_equal(id, tid[0])) {
+		system("mkdir /home/faqih/Documents/FolderProses1");
+		system("ps -aux | head -10 > /home/faqih/Documents/FolderProses1/SimpanProses1.txt");
+		system("zip -j /home/faqih/Documents/FolderProses1/KompresProses1.zip /home/faqih/Documents/FolderProses1/SimpanProses1.txt");
+		system("rm /home/faqih/Documents/FolderProses1/SimpanProses1.txt");
+		sleep(15);
+		system("unzip -o /home/faqih/Documents/FolderProses1/KompresProses1.zip -d /home/faqih/Documents/FolderProses1/");
+	} else  {
+		system("mkdir /home/faqih/Documents/FolderProses2");
+		system("ps -aux | head -10 > /home/faqih/Documents/FolderProses2/SimpanProses2.txt");
+		system("zip -j /home/faqih/Documents/FolderProses2/KompresProses2.zip /home/faqih/Documents/FolderProses2/SimpanProses2.txt");
+		system("rm /home/faqih/Documents/FolderProses2/SimpanProses2.txt");
+		sleep(15);
+		system("unzip -o /home/faqih/Documents/FolderProses2/KompresProses2.zip -d /home/faqih/Documents/FolderProses2/");
+	}
+	return NULL;
+}
+
+int main(void)
+{
+	pthread_create(&tid[0], NULL, &solve, NULL);
+	pthread_create(&tid[1], NULL, &solve, NULL);
+	pthread_join(tid[0], NULL);
+	pthread_join(tid[1], NULL);
+	return 0;
+}
+```
+    
+  Penjelasan = 
+    Membuat program C untuk menyimpan 10 list proses yang sedang berjalan (ps-aux),Dimana awalnya list proses disimpan dalam di 2 file ekstensi .txt yaitu  SimpanProses1.txt di direktori /home/Document/FolderProses1 dan SimpanProses2.txt di direktori /home/Document/FolderProses2setelah itu masing2 file di  kompres zip dengan format nama file KompresProses1.zip dan KompresProses2.zip dan file SimpanProses1.txt dan SimpanProses2.txt akan otomatis terhapus, setelah itu program akan menunggu selama 15 detik lalu program akan mengekstrak kembali file KompresProses1.zip dan KompresProses2.zip.
+       Pertama, kita membuat fungsi untuk membuat file "FolderProses1", kemudian membuat fungsi untuk mengambil dan me-list 10  proses yang ada pada ps-aux, selanjutnya membuat fungsi untuk zip untuk me-zip file .txt menjadi .zip , kemudian membuat fungsi untuk menghapus file berkesktensi .txt, lalu kita buat program menunggu selama 15 deitk lalu yang terakhir membuat fungsi untuk unzip file. Lakukan proses diatas untuk proses1 dan proses2.
+    
