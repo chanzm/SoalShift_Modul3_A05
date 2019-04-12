@@ -4,62 +4,48 @@
 
 void *faktorial( void *arr );
 void swap(int *xp, int *yp);
+void sorting(int A[], int n);
 
-pthread_t *thread;//inisialisasi awal
-int arr[1000];
-int banyak=0;
-int main()
+int faktor[1000];
+int count=1;
+int main(int argc, char* argv[])
 {
-        int i=0;
-        int t=0;
-        int iret1;
-        while(1)
-        {
-                char chr;
-                scanf("%d%c", &arr[t], &chr);
-                thread=malloc(t*sizeof(int));
-                t++;
-                int  j, min_idx;
+        int i;
+        int batas=argc;
+        int arr[batas];
 
-                        //One by one move boundary of unsorted subarray 
-                for (i=0; i<t; i++) 
-                {
-                        // Find the minimum element in unsorted array 
-                        min_idx = i;
-                        for (j=i+1; j<t; j++)
-                                if (arr[j] < arr[min_idx]) min_idx = j;
-                                        //Swap the found minimum element with the first element
-                        swap(&arr[min_idx], &arr[i]);
-                }
+        //faktor = malloc(batas*sizeof(int));
 
-                if(chr == '\n') break;
+        for(i=1;i<batas;i++) arr[i]=atoi(argv[i]);
+
+        sorting(arr, batas);
+
+        pthread_t thread[batas];
+
+        for(i=1;i<batas;i++) {
+                pthread_create( &thread[i], NULL, faktorial, &arr[i]);//membuat thread
         }
-        for(i=0;i<t;i++)
-        {
-                iret1 = pthread_create( &thread[banyak], NULL, faktorial, NULL);//membuat thread pertama
-                if(iret1)//jika eror
-                {
-                        fprintf(stderr,"Error - pthread_create() return code: %d\n",iret1);
-                        exit(EXIT_FAILURE);
-                }
-                pthread_join( thread[i], NULL); 
-                 banyak++;
-                if(t==banyak) break;
-         }
-        // for(int i=0;i<banyak;i++) pthread_join( thread[i], NULL); 
 
-        exit(EXIT_SUCCESS);
+        for(i=1;i<batas;i++) {
+                pthread_join(thread[i], NULL);
+       }
 
+        sorting(faktor, count);
+
+        for(i=1;i<count;i++) {
+                printf("%d! = %d\n", arr[i], faktor[i]);
+        }
 }
 
 
 void *faktorial( void *ar )
 {
-    int x=arr[banyak];
+    int *x=(int*) ar;
     int total=1;
     int c;
-    for(c=x;c>0;c--) total*=c;
-    printf("%d! = %d\n", x,total);
+    for(c=*x;c>0;c--) total*=c;
+    faktor[count]=total;
+    count++;
 }
 
 
@@ -69,4 +55,20 @@ void swap(int *xp, int *yp)
     *xp = *yp;
     *yp = temp;
 }
+
+void sorting(int A[], int n)
+{
+        int i, j, min_idx;
+        //One by one move boundary of unsorted subarray
+        for (i=1; i<n; i++)
+        {
+              // Find the minimum element in unsorted array
+              min_idx = i;
+              for (j=i+1; j<n; j++)
+                      if (A[j] < A[min_idx]) min_idx = j;
+              //Swap the found minimum element with the first element
+              swap(&A[min_idx], &A[i]);
+         }
+}
+
 
