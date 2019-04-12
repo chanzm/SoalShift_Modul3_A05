@@ -851,24 +851,31 @@ Penjelasan :
 Pertama, kita inputkan template termios untuk auto enter dengan memasukkan library '#include<termios.h>' juga. Lalu, deklarasikan semua variabel dengan inisialisasi sesuai pada soal. Disini juga diinisialisasai 'jeda=0' yaitu masih berada pada tampilan menu standby, dengan asumsi jika 'jeda=1', maka tampilan battle yang akan ditampilkan, dan jika 'jeda=2', maka tampilan keranjang makanan yang akan ditampilkan. Lalu membuat fungsi-fungsi yang dibutuhkan.
 
 1.Fungsi laper
+
 Pertama, fungsi lapar harus didalam tampilan menu awal standby. Lalu dilakukan pengurangan 5 detik tiap 10 detik_hungry. Terakhir, jika status hungry nya sampai 0, maka monster mati dengan menampilkan 'printf("Kelaperan. Mati deh :(\n")'
 
 2.Fungsi higinis
+
 Pertama, fungsi lapar harus didalam tampilan menu awal standby.Lalu dilakukan pengurangan 10 detik tiap 30 detik hieginis. Terakhir, jika status higinis nya sampai 0, maka monster mati dengan menampilkan 'printf("Kotor banget. Monster dah mati\n")'
 
 3.Fungsi sehat
+
 Pertama, fungsi lapar harus didalam tampilan menu awal standby.Lalu dilakukan penambahan 5 detik tiap 10 detik health. Terakhir, jika status health nya sampai 0, maka monster mati dengan menampilkan 'printf("Monster mati. Sakit-sakitan sih\n")'
 
 4.Fungsi itungan_mandi
+
 Pertama, fungsi lapar harus didalam tampilan menu awal standby. Fungsi ini sendiri digunakan untuk countdown dari 20-0, ketika det_mandi sudah 0, maka set variabel 'langsung_mandi'=1, yang berarti ia mandi dengan mengeprint "Bath is ready\n" pada tampilan yang ada pada fungsi tampilan_asli
 
 5. Fungsi ini_shop
+
 Fungsi ini adalah fungsi yang menggunakan shared memory didalamnya yang menggunakan memory yang sama dengan kodingan 'shift5_b.c'
 
 6. Fungsi tampilan_asli
+
 Fungsi untuk tampilan menu standby
 
 7. Fungsi tampilan_food
+
 Fungsi untuk tampilan keranjang/stock makanan yang tersedia
 
 Pada fungsi main, kita menginput nama monster yang kita inginkan, lalu membuat thread sebanyak fungsi2 yang akan dijalankan bersama tadi, yaitu 7 thread. 
@@ -882,7 +889,11 @@ Taklupa juga membuat pthread join untuk ketujuh thread yang telah dibuat tadi.
  
    -Penj_Code2=
  Seperti kodingan 'shift5_b', termios juga dibutuhkan. Lalu, kita membuat 2 fungsi yaitu :
+ 
  1. Fungsi shop_ini
+ 
  Fungsi yang menggunakan shared memory dan akan terhubung dengan kodingan 'shift5_a.c' yang tadinya bermaksud menggunakan memori yang sama dengan kodingan ini.
+ 
  2. Fungsi shopping
+ 
  Fungsi yang menampilkan pilihan untuk restock ataupun exit. Dan jika restock, maka akan terupdate pada menu keranjang bahwa 'maem_shop' di kodingan 'shift5_a.c' akan bertambah sebanyak yang ditambahkan. Kita juga membuat thread sebanyak fungsi yang dibuat slain main, yaitu 2 thread.
