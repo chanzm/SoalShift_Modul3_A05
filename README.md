@@ -863,7 +863,26 @@ Pertama, fungsi lapar harus didalam tampilan menu awal standby.Lalu dilakukan pe
 Pertama, fungsi lapar harus didalam tampilan menu awal standby. Fungsi ini sendiri digunakan untuk countdown dari 20-0, ketika det_mandi sudah 0, maka set variabel 'langsung_mandi'=1, yang berarti ia mandi dengan mengeprint "Bath is ready\n" pada tampilan yang ada pada fungsi tampilan_asli
 
 5. Fungsi ini_shop
-Fungsi ini adalah fungsi yang 
+Fungsi ini adalah fungsi yang menggunakan shared memory didalamnya yang menggunakan memory yang sama dengan kodingan 'shift5_b.c'
 
+6. Fungsi tampilan_asli
+Fungsi untuk tampilan menu standby
 
+7. Fungsi tampilan_food
+Fungsi untuk tampilan keranjang/stock makanan yang tersedia
+
+Pada fungsi main, kita menginput nama monster yang kita inginkan, lalu membuat thread sebanyak fungsi2 yang akan dijalankan bersama tadi, yaitu 7 thread. 
+
+Lalu dilakukan updating score pada hungry status yang bertambah 15 jika telah makan, dan jika telah mandi bertambah 30, lalu saat battle 
+,saat kita menyerang maka health status monster dan lawan sama2 berkurang 20 secara bersamaan, dan jika kita klik run, maka keluar kembali pada tampilan menu stand by awal dengan memanggil flag 'jeda=0'.
+
+Pada keranjang juga pada tampilan keranjang yaitu 'jeda=2', maka kita bisa pilih membeli atau kembali ke menu awal standby, Jika membeli maka, keranjang(maem_monster akan terisi dan maem_shop yang telah diisi stok dari kodingan shift5_b.c akan berkurang). Terakhir , kita membersihkan papan dan kembali saat memilih perintah 'exit'.
+
+Taklupa juga membuat pthread join untuk ketujuh thread yang telah dibuat tadi.
+ 
    -Penj_Code2=
+ Seperti kodingan 'shift5_b', termios juga dibutuhkan. Lalu, kita membuat 2 fungsi yaitu :
+ 1. Fungsi shop_ini
+ Fungsi yang menggunakan shared memory dan akan terhubung dengan kodingan 'shift5_a.c' yang tadinya bermaksud menggunakan memori yang sama dengan kodingan ini.
+ 2. Fungsi shopping
+ Fungsi yang menampilkan pilihan untuk restock ataupun exit. Dan jika restock, maka akan terupdate pada menu keranjang bahwa 'maem_shop' di kodingan 'shift5_a.c' akan bertambah sebanyak yang ditambahkan. Kita juga membuat thread sebanyak fungsi yang dibuat slain main, yaitu 2 thread.
